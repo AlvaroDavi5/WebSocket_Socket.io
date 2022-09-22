@@ -4,9 +4,25 @@
 	"repository": "git@github.com:AlvaroDavi5/WebSocket_Socket.io.git",
 	"author": "AlvaroDavi5 <alvaro-davi1@hotmail.com>",
 	"license": "MIT",
+	"scripts": {
+		"postinstall": "husky install",
+		"lint": "eslint ./src/**/**.js",
+		"lint:fix": "eslint --fix ./src/**/**.js",
+		"run": ""
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "husky add ./.husky/pre-commit",
+			"pre-push": "husky add ./.husky/pre-push"
+		}
+	},
 	"dependencies": {
 		"ejs": "^3.1.8",
 		"express": "^4.18.1",
 		"socket.io": "^4.5.2"
+	},
+	"devDependencies": {
+		"eslint": "^8.23.1",
+		"husky": "^8.0.1"
 	}
 }
