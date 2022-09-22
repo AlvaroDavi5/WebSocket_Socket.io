@@ -37,6 +37,7 @@
 				}
 			});
 
+			// receive message from the server
 			socket.on('receivedMessage', function(msgObj) {
 				renderMessage(msgObj);
 			});
@@ -53,6 +54,7 @@
 						message: message,
 					};
 
+					// send message to the server
 					renderMessage(messageObject);
 					socket.emit('sendMessage', messageObject);
 				}

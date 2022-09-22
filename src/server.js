@@ -29,10 +29,12 @@ const messages = [];
 websocket.on('connection', (socket) => {
 	console.log('Socket ID:', `${socket.id}`);
 
+	// send message tho the client
 	socket.emit('previousMessages', messages);
 
 	socket.on('sendMessage', (data) => {
 		messages.push(data);
+		// receive message from the client
 		socket.broadcast.emit('receivedMessage', data);
 	});
 });
