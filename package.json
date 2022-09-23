@@ -8,7 +8,7 @@
 		"postinstall": "husky install",
 		"lint": "eslint ./src/**/**.js",
 		"lint:fix": "eslint --fix ./src/**/**.js",
-		"start": "node ./src/server.js"
+		"start": "node ./src/index.js"
 	},
 	"husky": {
 		"hooks": {
