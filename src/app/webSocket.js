@@ -1,9 +1,9 @@
-const socketIO = require('socket.io');
+const { Server } = require('socket.io');
 
 
 function initWebSocket(server, clients) {
 	// WebSocket assignment
-	const webSocket = socketIO(server, {
+	const webSocket = new Server(server, {
 		path: '/websocket'
 	});
 
