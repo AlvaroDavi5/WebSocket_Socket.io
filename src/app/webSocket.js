@@ -3,9 +3,9 @@ const socketIO = require('socket.io');
 
 function createWebSocket(server) {
 	// WebSocket assignment
-	const websocket = socketIO(server);
+	const webSocket = socketIO(server);
 
-	return websocket;
+	return webSocket;
 }
 
 module.exports = createWebSocket;
