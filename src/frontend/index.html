@@ -66,7 +66,7 @@
 		</form>
 
 		<script type="text/javascript">
-			var socket = io('http://localhost:3000');
+			var socket = io('http://localhost:3000/');
 
 			function renderMessage(msgObj) {
 				$('.messages').append(`
@@ -77,14 +77,8 @@
 				`);
 			}
 
-			socket.on('previousMessages', function(messages) {
-				for (message of messages) {
-					renderMessage(message);
-				}
-			});
-
 			// receive message from the server
-			socket.on('receivedMessage', function(msgObj) {
+			socket.on('testEvent', function(msgObj) {
 				renderMessage(msgObj);
 			});
 
@@ -102,7 +96,7 @@
 
 					// send message to the server
 					renderMessage(messageObject);
-					socket.emit('sendMessage', messageObject);
+					socket.emit('testEvent', messageObject);
 				}
 			});
 		</script>

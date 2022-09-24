@@ -1,17 +1,19 @@
 const dotenv = require('dotenv');
 dotenv.config();
-const restApi = require('./app/restApi.js');
+const createRestApi = require('./app/restApi.js');
 const createHttpServer = require('./app/httpServer.js');
-const createWebSocket = require('./app/webSocket.js');
+const initWebSocket = require('./app/webSocket.js');
 const WebSocketServer = require('./interface/websocket/server.js');
 const WebSocketClient = require('./interface/websocket/client.js');
 
 
 // server assignment
+const restApi = createRestApi();
 const httpServer = createHttpServer(restApi);
 
 // websocket connection
-const webSocket = createWebSocket(httpServer);
+const webSocketClients = [];
+const webSocket = initWebSocket(httpServer, webSocketClients);
 const webSocketUrl = process.env.APP_URL || 'http://localhost:3000/';
 const webSocketServer = new WebSocketServer(webSocket);
 const webSocketClient = new WebSocketClient(webSocketUrl);
