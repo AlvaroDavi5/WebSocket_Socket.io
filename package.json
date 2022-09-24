@@ -1,14 +1,19 @@
 {
-	"name": "WebSocket_Socket.io",
+	"name": "websocket_socket.io",
 	"version": "1.0.0",
 	"repository": "git@github.com:AlvaroDavi5/WebSocket_Socket.io.git",
 	"author": "AlvaroDavi5 <alvaro-davi1@hotmail.com>",
 	"license": "MIT",
 	"scripts": {
 		"postinstall": "husky install",
-		"lint": "eslint ./src/**/**.js",
-		"lint:fix": "eslint --fix ./src/**/**.js",
-		"start": "node ./src/index.js"
+		"start": "node ./src/index.js",
+		"lint": "eslint ./src/**/**.js ./scripts/**/**.js",
+		"lint:fix": "eslint --fix ./src/**/**.js ./scripts/**/**.js",
+		"queue:create": "node ./scripts/create.js",
+		"queue:delete": "node ./scripts/delete.js",
+		"queue:list": "node ./scripts/list.js",
+		"queue:send-message": "node ./scripts/send.js",
+		"queue:receive-message": "node ./scripts/receive.js"
 	},
 	"husky": {
 		"hooks": {
@@ -17,10 +22,14 @@
 		}
 	},
 	"dependencies": {
+		"aws-sdk": "^2.1223.0",
+		"dotenv": "^16.0.2",
 		"ejs": "^3.1.8",
 		"express": "^4.18.1",
 		"socket.io": "^4.5.2",
-		"socket.io-client": "^4.5.2"
+		"socket.io-client": "^4.5.2",
+		"sqs-consumer": "^5.7.0",
+		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
 		"eslint": "^8.23.1",

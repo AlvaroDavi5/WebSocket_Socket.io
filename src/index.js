@@ -4,7 +4,11 @@ const http = require('http');
 const ejs = require('ejs');
 const express = require('express');
 const socketIO = require('socket.io');
+const queueConsumer = require('./queue/consumer.js');
 
+
+// queue consumer start
+queueConsumer.start();
 
 // server assignment
 const app = express();
