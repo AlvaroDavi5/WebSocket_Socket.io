@@ -1,6 +1,3 @@
-const path = require('path');
-const ejs = require('ejs');
-
 
 module.exports = function (app) {
 
@@ -13,16 +10,11 @@ module.exports = function (app) {
 			method: request?.method,
 			url: request?.baseUrl,
 			statusCode: response?.statusCode,
+			status: 'OK',
 		});
 	});
 
-
 	app.get('/home', (request, response) => {
-		//app.use(express.static(path.join(__dirname, '..', 'frontend')));
-		app.set('views', path.join(__dirname, '..', '..', 'frontend'));
-		app.engine('html', ejs.renderFile);
-		app.set('view engine', 'html');
-
 		console.log(`[${request?.method}] ${request.url} - ${response?.statusCode}`);
 
 		response.status(200);

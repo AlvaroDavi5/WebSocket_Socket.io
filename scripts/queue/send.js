@@ -6,7 +6,7 @@ const queueFullUrl = process.env.QUEUE_FULL_URL || 'http://localhost:4566/000000
 const queueName = process.env.QUEUE_NAME || 'DEFAULT_QUEUE.fifo';
 
 const message = {
-	title: 'Clean Architecture',
+	message: 'Do you read Clean Architecture?',
 	author: 'Robert Martin',
 };
 

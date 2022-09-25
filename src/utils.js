@@ -12,8 +12,7 @@ const restApi = createRestApi();
 const httpServer = createHttpServer(restApi);
 
 // websocket connection
-const webSocketClients = [];
-const webSocket = initWebSocket(httpServer, webSocketClients);
+const webSocket = initWebSocket(httpServer);
 const webSocketUrl = process.env.APP_URL || 'http://localhost:3000/';
 const webSocketServer = new WebSocketServer(webSocket);
 const webSocketClient = new WebSocketClient(webSocketUrl);

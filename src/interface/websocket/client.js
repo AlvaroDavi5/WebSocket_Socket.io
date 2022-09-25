@@ -1,21 +1,44 @@
 const { io } = require('socket.io-client');
-const { formatMessageBeforeSend, formatMessageAfterReceive } = require('./helpers/formatter.js');
 
 
 class WebSocketClient {
 
 	constructor(socketUrl) {
 		this.socket = io(socketUrl);
-		this._formatMessageBeforeSend = formatMessageBeforeSend;
-		this._formatMessageAfterReceive = formatMessageAfterReceive;
+	};
+
+	_formatMessageBeforeSend(message) {
+		let msg = '';
+
+		try {
+			msg = JSON.stringify(message);
+		}
+		catch (error) {
+			msg = String(message);
+		}
+
+		return msg;
+	};
+	_formatMessageAfterReceive(message) {
+		let msg = '';
+
+		try {
+			msg = JSON.parse(message);
+		}
+		catch (error) {
+			msg = String(message);
+		}
+
+		return msg;
 	};
 
 	// send message to the server
 	send(event, msg) {
+		msg = this._formatMessageBeforeSend(msg);
 
 		this.socket.emit(
 			String(event),
-			this._formatMessageBeforeSend(msg),
+			msg,
 		);
 
 	};
@@ -27,11 +50,11 @@ class WebSocketClient {
 		this.socket.on(
 			String(event),
 			function (msg) {
-				message = this._formatMessageAfterReceive(msg);
+				message = msg;
 			},
 		);
 
-		return message;
+		return this._formatMessageAfterReceive(message);
 	};
 
 };

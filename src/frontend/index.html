@@ -77,9 +77,15 @@
 				`);
 			}
 
-			// receive message from the server
-			socket.on('testEvent', function(msgObj) {
-				renderMessage(msgObj);
+			socket.on('previousMessages', function(messages) {
+				for (message of messages) {
+					renderMessage(message);
+				}
+			});
+
+			// receive messages from the server
+			socket.on('receivedMessage', function(message) {
+				renderMessage(message);
 			});
 
 			$('#chat').submit(function(event) {
@@ -89,14 +95,14 @@
 				var message = $('input[name=message]').val();
 
 				if (author?.length && message?.length) {
-					var messageObject = {
+					const msg = {
 						author: author,
 						message: message,
 					};
 
 					// send message to the server
-					renderMessage(messageObject);
-					socket.emit('testEvent', messageObject);
+					renderMessage(msg);
+					socket.emit('sendMessage', msg);
 				}
 			});
 		</script>

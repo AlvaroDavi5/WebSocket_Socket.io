@@ -1,45 +1,75 @@
-const { formatMessageBeforeSend, formatMessageAfterReceive } = require('./helpers/formatter.js');
-
 
 class WebSocketServer {
 
 	constructor(webSocketServer) {
 		this.server = webSocketServer;
-		this._formatMessageBeforeSend = formatMessageBeforeSend;
-		this._formatMessageAfterReceive = formatMessageAfterReceive;
+		this.clients = [];
 	};
 
-	// send message to the client
-	send(event, msg) {
+	_formatMessageBeforeSend(message) {
+		let msg = '';
 
-		this.server.on('connection', (socket) => {
-			console.log('Socket ID:', `${socket.id}`);
+		try {
+			msg = JSON.stringify(message);
+		}
+		catch (error) {
+			msg = String(message);
+		}
 
-			//socket.broadcast.emit(); // send to all clients except the sender
-			socket.emit(
-				String(event),
-				this._formatMessageBeforeSend(msg),
-			);
-		});
+		return msg;
+	};
+	_formatMessageAfterReceive(message) {
+		let msg = '';
 
+		try {
+			msg = JSON.parse(JSON.stringify(message));
+		}
+		catch (error) {
+			msg = String(message);
+		}
+
+		return msg;
 	};
 
-	// receive message from the client
-	receive(event, msg) {
-		let message = '';
+	init() {
+		const messages = [];
+		const formatBeforeSend = (message) => this._formatMessageBeforeSend(message);
+		const formatAfterReceive = (message) => this._formatMessageAfterReceive(message);
 
-		this.server.on('connection', (socket) => {
-			console.log('Socket ID:', `${socket.id}`);
+		// connection started
+		this.server.on(
+			'connection',
+			(socket) => {
+				this.clients.push(socket);
+				console.log(`Client connected: ${socket.id}`);
 
-			this.socket.on(
-				String(event),
-				function () {
-					message = this._formatMessageAfterReceive(msg);
-				},
-			);
-		});
+				// connection closed
+				socket.on(
+					'disconnect',
+					(msg) => {
+						console.log(`Client disconnected: ${socket.id}`);
+						this.clients.splice(this.clients.indexOf(socket), 1);
+					},
+				);
 
-		return message;
+				// listen send event from the client and send message to the client
+				socket.on(
+					'sendMessage',
+					function (msg) {
+						console.log('Sended Message:', formatAfterReceive(msg));
+						messages.push(formatAfterReceive(msg));
+						socket.broadcast.emit(
+							'receivedMessage',
+							formatAfterReceive(msg),
+						); // send to all clients except the sender
+					},
+				);
+
+				socket.broadcast.emit('previousMessages', messages);
+			},
+		);
+
+		console.log('Initialized WebSocket');
 	};
 
 };
