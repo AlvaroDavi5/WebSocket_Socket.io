@@ -5,7 +5,53 @@
 			Chat with WebSocket
 		</title>
 
-		<link rel="stylesheet" href="style.css">
+		<style>
+			html, body {
+				height: 100%;
+			}
+	
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+	
+			#chat {
+				height: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-direction: column;
+			}
+	
+			input {
+				width: 600px;
+				border: 1px solid #ddd;
+				height: 50px;
+				padding: 0 20px;
+				font-size: 14px;
+			}
+	
+			button {
+				width: 600px;
+				height: 50px;
+				font-size: 14px;
+				background: #069;
+				text-align: center;
+				line-height: 50px;
+				font-weight: bold;
+				color: #FFF;
+				margin-top: 10px;
+			}
+	
+			.messages {
+				width: 600px;
+				height: 400px;
+				margin: 20px 0;
+				border: 1px solid #ddd;
+				padding: 20px;
+			}
+		</style>
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.2/socket.io.js"></script>
@@ -20,7 +66,7 @@
 		</form>
 
 		<script type="text/javascript">
-			var socket = io('http://localhost:3000');
+			var socket = io('http://localhost:3000/');
 
 			function renderMessage(msgObj) {
 				$('.messages').append(`
@@ -31,15 +77,16 @@
 				`);
 			}
 
-			socket.on('previousMessages', function(messages) {
+			socket.on('previousMessages', function(msg) {
+				const messages = JSON.parse(msg)?.messages;
 				for (message of messages) {
-					renderMessage(message);
+					renderMessage(message); // load old messages
 				}
 			});
 
-			// receive message from the server
-			socket.on('receivedMessage', function(msgObj) {
-				renderMessage(msgObj);
+			// receive messages from the server
+			socket.on('receivedMessage', function(message) {
+				renderMessage(JSON.parse(message));
 			});
 
 			$('#chat').submit(function(event) {
@@ -49,14 +96,14 @@
 				var message = $('input[name=message]').val();
 
 				if (author?.length && message?.length) {
-					var messageObject = {
+					const msg = {
 						author: author,
 						message: message,
 					};
 
 					// send message to the server
-					renderMessage(messageObject);
-					socket.emit('sendMessage', messageObject);
+					renderMessage(msg);
+					socket.emit('sendMessage', JSON.stringify(msg));
 				}
 			});
 		</script>
