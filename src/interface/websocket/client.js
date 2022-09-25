@@ -7,34 +7,8 @@ class WebSocketClient {
 		this.socket = io(socketUrl);
 	};
 
-	_formatMessageBeforeSend(message) {
-		let msg = '';
-
-		try {
-			msg = JSON.stringify(message);
-		}
-		catch (error) {
-			msg = String(message);
-		}
-
-		return msg;
-	};
-	_formatMessageAfterReceive(message) {
-		let msg = '';
-
-		try {
-			msg = JSON.parse(message);
-		}
-		catch (error) {
-			msg = String(message);
-		}
-
-		return msg;
-	};
-
 	// send message to the server
 	send(event, msg) {
-		msg = this._formatMessageBeforeSend(msg);
 
 		this.socket.emit(
 			String(event),
@@ -44,17 +18,13 @@ class WebSocketClient {
 	};
 
 	// receive message from the server
-	receive(event) {
-		let message = '';
+	receive(event, callback) {
 
 		this.socket.on(
 			String(event),
-			function (msg) {
-				message = msg;
-			},
+			callback,
 		);
 
-		return this._formatMessageAfterReceive(message);
 	};
 
 };

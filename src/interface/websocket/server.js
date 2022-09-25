@@ -22,7 +22,7 @@ class WebSocketServer {
 		let msg = '';
 
 		try {
-			msg = JSON.parse(JSON.stringify(message));
+			msg = JSON.parse(message);
 		}
 		catch (error) {
 			msg = String(message);
@@ -56,16 +56,18 @@ class WebSocketServer {
 				socket.on(
 					'sendMessage',
 					function (msg) {
-						console.log('Sended Message:', formatAfterReceive(msg));
-						messages.push(formatAfterReceive(msg));
+						msg = formatAfterReceive(msg);
+						console.log('Sended Message:', msg);
+						messages.push(msg);
+
 						socket.broadcast.emit(
 							'receivedMessage',
-							formatAfterReceive(msg),
+							formatBeforeSend(msg),
 						); // send to all clients except the sender
 					},
 				);
 
-				socket.broadcast.emit('previousMessages', messages);
+				socket.emit('previousMessages', JSON.stringify({ messages }));
 			},
 		);
 

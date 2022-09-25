@@ -77,15 +77,16 @@
 				`);
 			}
 
-			socket.on('previousMessages', function(messages) {
+			socket.on('previousMessages', function(msg) {
+				const messages = JSON.parse(msg)?.messages;
 				for (message of messages) {
-					renderMessage(message);
+					renderMessage(message); // load old messages
 				}
 			});
 
 			// receive messages from the server
 			socket.on('receivedMessage', function(message) {
-				renderMessage(message);
+				renderMessage(JSON.parse(message));
 			});
 
 			$('#chat').submit(function(event) {
@@ -102,7 +103,7 @@
 
 					// send message to the server
 					renderMessage(msg);
-					socket.emit('sendMessage', msg);
+					socket.emit('sendMessage', JSON.stringify(msg));
 				}
 			});
 		</script>

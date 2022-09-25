@@ -12,7 +12,7 @@ const consumer = Consumer.create({
 	handleMessage: async (message) => {
 		webSocketClient.send(
 			'sendMessage',
-			JSON.parse(message?.Body),
+			message?.Body,
 		);
 	}
 });

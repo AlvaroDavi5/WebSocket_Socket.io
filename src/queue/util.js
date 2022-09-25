@@ -47,9 +47,12 @@ const msgParams = (queueUrl, message, title, author) => {
 		extraParams.MessageGroupId = messageGroupId; // Required for FIFO queues
 	}
 
-	let messageBody = String(message);
+	let messageBody = '';
 	if (typeof (message) === 'object') {
 		messageBody = JSON.stringify(message);
+	}
+	else {
+		messageBody = String(message);
 	}
 
 	return {
