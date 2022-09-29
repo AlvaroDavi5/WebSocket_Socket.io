@@ -15,6 +15,7 @@
 		"queue:list": "node ./scripts/queue/list.js",
 		"queue:send-message": "node ./scripts/queue/send.js",
 		"queue:receive-message": "node ./scripts/queue/receive.js",
+		"commit": "git-cz",
 		"lint": "eslint ./src/**/**.js ./scripts/**/**.js",
 		"lint:fix": "eslint --fix ./src/**/**.js ./scripts/**/**.js"
 	},
@@ -22,6 +23,11 @@
 		"hooks": {
 			"pre-commit": "husky add ./.husky/pre-commit",
 			"pre-push": "husky add ./.husky/pre-push"
+		}
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
 		}
 	},
 	"dependencies": {
@@ -36,6 +42,10 @@
 		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
+		"@commitlint/cli": "^17.1.2",
+		"@commitlint/config-conventional": "^17.1.0",
+		"commitizen": "^4.2.5",
+		"cz-conventional-changelog": "3.3.0",
 		"eslint": "^8.23.1",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-config-standard": "^17.0.0",
